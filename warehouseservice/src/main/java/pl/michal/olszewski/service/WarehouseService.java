@@ -42,7 +42,7 @@ public class WarehouseService {
     }
 
     public void updateWarehouse(final WarehouseDTO warehouseDTO, final Long id) {
-        warehouseRepository.updateWarehouse(warehouseDTO.getName(), new Address(warehouseDTO), id);
+        warehouseRepository.updateWarehouse(warehouseDTO.getName(), warehouseDTO.getStreet(), warehouseDTO.getCity(), warehouseDTO.getCountry(), warehouseDTO.getZipCode(), id);
     }
 
     public void deleteWarehouse(final Long id) {

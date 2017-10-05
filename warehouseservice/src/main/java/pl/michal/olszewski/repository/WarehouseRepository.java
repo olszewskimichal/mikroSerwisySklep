@@ -18,6 +18,6 @@ public interface WarehouseRepository extends JpaRepository<Warehouse, Long> {
 
     @Transactional
     @Modifying
-    @Query("update Warehouse p set p.name = ?1, p.address = ?2 where p.id = ?3")
-    int updateWarehouse(String name, Address address, Long id);
+    @Query("update Warehouse p set p.name = ?1, p.address.street = ?2, p.address.city = ?3, p.address.country = ?4, p.address.zipCode = ?5 where p.id = ?6")
+    int updateWarehouse(String name, String street, String city, String country, String zipCode, Long id);
 }
