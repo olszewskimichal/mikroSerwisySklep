@@ -47,7 +47,6 @@ public class ProductRepositoryTest extends JpaTestBase {
     }
 
     @Test
-    @Transactional
     public void shouldUpdateProduct() {
         //given
         Product product = this.entityManager.persistAndFlush(new Product(productDefinition, ProductStatus.IN_STORE));
