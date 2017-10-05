@@ -1,0 +1,2 @@
+curl -i -X PUT -H "Content-Type:application/json" -d "{ \"name\" : \"test2\", \"prodType\" : \"2\", \"price\" : \"3\" }" http://localhost:8080/productDefinitions/4
+curl -i -X POST -H "Content-Type:application/json" -d "{ \"name\" : \"test\", \"prodType\" : \"3\", \"price\" : \"3\" }" http://localhost:8080/productDefintions
