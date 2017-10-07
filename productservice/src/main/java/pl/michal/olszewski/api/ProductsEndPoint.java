@@ -1,10 +1,11 @@
-package pl.michal.olszewski.service;
+package pl.michal.olszewski.api;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pl.michal.olszewski.dto.ProductDTO;
+import pl.michal.olszewski.service.ProductService;
 
 import java.util.List;
 import java.util.Optional;

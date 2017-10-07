@@ -43,7 +43,7 @@ public class ProductDefinitionsApiTest extends IntegrationTest {
     }
 
     @Test
-    public void should_get_3_products() {
+    public void should_get_all_products() {
         givenProductDefinition()
                 .buildNumberOfProductDefinitionsAndSave(3);
 

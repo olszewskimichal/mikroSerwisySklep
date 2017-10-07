@@ -3,7 +3,6 @@ package pl.michal.olszewski.api;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
@@ -14,7 +13,6 @@ import pl.michal.olszewski.dto.ProductDTO;
 import pl.michal.olszewski.entity.ProductDefinition;
 import pl.michal.olszewski.enums.ProductStatus;
 import pl.michal.olszewski.service.ProductService;
-import pl.michal.olszewski.service.ProductsEndPoint;
 
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;

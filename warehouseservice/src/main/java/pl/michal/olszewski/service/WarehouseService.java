@@ -4,7 +4,6 @@ import lombok.NonNull;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import pl.michal.olszewski.dto.WarehouseDTO;
-import pl.michal.olszewski.entity.Address;
 import pl.michal.olszewski.entity.Warehouse;
 import pl.michal.olszewski.repository.WarehouseRepository;
 

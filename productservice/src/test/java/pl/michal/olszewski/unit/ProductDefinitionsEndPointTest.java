@@ -5,9 +5,9 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import pl.michal.olszewski.api.ProductsDefinitionEndPoint;
 import pl.michal.olszewski.dto.ProductDefinitionDTO;
 import pl.michal.olszewski.service.ProductService;
-import pl.michal.olszewski.api.ProductsDefinitionEndPoint;
 
 import java.math.BigDecimal;
 
