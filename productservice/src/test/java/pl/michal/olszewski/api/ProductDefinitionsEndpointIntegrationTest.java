@@ -12,7 +12,6 @@ import pl.michal.olszewski.builders.ProductDefinitionsDTOListFactory;
 import pl.michal.olszewski.dto.ProductDefinitionDTO;
 import pl.michal.olszewski.enums.ProductType;
 import pl.michal.olszewski.service.ProductService;
-import pl.michal.olszewski.service.ProductsDefinitionEndPoint;
 
 import java.math.BigDecimal;
 
