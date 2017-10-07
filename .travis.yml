@@ -2,11 +2,8 @@ language: java
 sudo: false
 jdk: oraclejdk8
 
-before_install:
-  - chmod ugo+x mvnw
-
 install:
-  - ./mvnw compile
+  - mvn install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
 
 cache:
   directories:
@@ -17,9 +14,6 @@ jobs:
   include:
     - stage: test
       script:
-        - ./mvnw verify
-    - stage: deploy
-      script:
-        - ./mvnw package -Dmaven.test.skip=true
+        - mvn verify
       after_success:
        - bash <(curl -s https://codecov.io/bash)
