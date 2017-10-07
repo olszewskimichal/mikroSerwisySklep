@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/v1/warehouses/")
+@RequestMapping("/api/v1/warehouses")
 public class WarehouseEndPoint {
     private final WarehouseService warehouseService;
 
@@ -36,5 +36,23 @@ public class WarehouseEndPoint {
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public List<WarehouseDTO> getWarehouses(@RequestParam(value = "limit", required = false) Integer limit, @RequestParam(value = "page", required = false) Integer page) {
         return warehouseService.getWarehouses(limit, page);
+    }
+
+    @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE, value = "/{warehouseId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void updateWarehouse(@PathVariable("warehouseId") Long warehouseId, @RequestBody WarehouseDTO warehouseDTO) {
+        warehouseService.updateWarehouse(warehouseDTO, warehouseId);
+    }
+
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void addWarehouse(@RequestBody WarehouseDTO warehouseDTO) {
+        warehouseService.createWarehouse(warehouseDTO);
+    }
+
+    @DeleteMapping(value = "/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteWarehouse(@PathVariable("id") Long warehouseId) {
+        warehouseService.deleteWarehouse(warehouseId);
     }
 }

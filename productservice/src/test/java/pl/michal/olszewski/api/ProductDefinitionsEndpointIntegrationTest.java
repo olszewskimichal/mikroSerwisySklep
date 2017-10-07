@@ -40,6 +40,15 @@ public class ProductDefinitionsEndpointIntegrationTest {
     }
 
     @Test
+    public void shouldReturnProductDefinitionDTOByName() throws Exception {
+        given(service.getProductDefinitionByName("nazwaTest")).willReturn(ProductDefinitionDTO.builder().name("nazwaTest").prodType(ProductType.TSHIRT.getValue()).price(BigDecimal.TEN.setScale(2, BigDecimal.ROUND_HALF_UP)).build());
+
+        mockMvc.perform(get("/api/v1/productDefinitions/name/nazwaTest"))
+                .andExpect(content().string("{\"name\":\"nazwaTest\",\"description\":null,\"imageUrl\":null,\"prodType\":1,\"price\":10.00}"))
+                .andExpect(status().is2xxSuccessful());
+    }
+
+    @Test
     public void shouldReturnProductsWithLimit() throws Exception {
         given(service.getProductDefinitions(2, null)).willReturn(ProductDefinitionsDTOListFactory.getNotPersistedProductDef(2));
         mockMvc.perform(get("/api/v1/productDefinitions?limit=2"))
@@ -54,6 +63,13 @@ public class ProductDefinitionsEndpointIntegrationTest {
                 .andExpect(status().isNotFound());
     }
 
+    @Test
+    public void shouldNotReturnProductDefinitionDTOByName() throws Exception {
+        given(service.getProductDefinitionByName("nazwaTest")).willReturn(null);
+
+        mockMvc.perform(get("/api/v1/productDefinitions/name/nazwaTest"))
+                .andExpect(status().isNotFound());
+    }
 
     @Test
     public void shouldUpdateProductAndReturn204() throws Exception {

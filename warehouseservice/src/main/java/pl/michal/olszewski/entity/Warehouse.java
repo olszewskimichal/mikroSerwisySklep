@@ -1,8 +1,6 @@
 package pl.michal.olszewski.entity;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.NonNull;
+import lombok.*;
 import pl.michal.olszewski.dto.WarehouseDTO;
 
 import javax.persistence.*;
@@ -11,6 +9,8 @@ import java.util.Set;
 @Entity
 @Data
 @NoArgsConstructor
+@Builder
+@AllArgsConstructor
 public class Warehouse {
     @Id
     @GeneratedValue
