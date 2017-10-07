@@ -7,6 +7,7 @@ import pl.michal.olszewski.IntegrationTest;
 import pl.michal.olszewski.builders.ProductDTOListFactory;
 import pl.michal.olszewski.builders.ProductListAssert;
 import pl.michal.olszewski.dto.ProductDTO;
+import pl.michal.olszewski.dto.ProductsStatusChangeDTO;
 import pl.michal.olszewski.entity.ProductDefinition;
 import pl.michal.olszewski.enums.ProductStatus;
 import pl.michal.olszewski.enums.ProductType;
@@ -16,6 +17,7 @@ import pl.michal.olszewski.repository.ProductRepository;
 import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -118,6 +120,31 @@ public class ProductsApiTest extends IntegrationTest {
         assertThat(realProductRepository.findByIdFetchProductDetails(productDTO.getProductId())).isNull();
     }
 
+    @Test
+    public void should_get_available_products() {
+        String productIds = givenProduct()
+                .buildNumberOfProductsAndSave(6, productDefinition, ProductStatus.IN_WAREHOUSE).stream().map(ProductDTO::getProductId).map(Object::toString).collect(Collectors.joining(","));
+
+        List<ProductDTO> products = thenGetAvailableProductsByIdsFromApi(productIds.substring(0, productIds.length() - 2));
+
+        ProductListAssert.assertThat(products)
+                .isSuccessful()
+                .hasNumberOfItems(5);
+    }
+
+    @Test
+    public void should_change_status_for_products() {
+        List<Long> idList = givenProduct()
+                .buildNumberOfProductsAndSave(6, productDefinition, ProductStatus.NEW).stream().map(ProductDTO::getProductId).collect(Collectors.toList());
+
+        List<ProductDTO> products = thenChangeStatusForProductsIdsByAPI(idList,ProductStatus.IN_WAREHOUSE.getValue());
+
+        ProductListAssert.assertThat(products)
+                .isSuccessful()
+                .hasNumberOfItems(6)
+                .hasProductsStatus(ProductStatus.IN_WAREHOUSE.getValue());
+    }
+
     private ProductDTOListFactory givenProduct() {
         return new ProductDTOListFactory(realProductRepository);
     }
@@ -144,5 +171,13 @@ public class ProductsApiTest extends IntegrationTest {
 
     private void thenDeleteOneProductFromApi(Long productId) {
         template.delete(String.format("http://localhost:%s/api/v1/products/%s", port, productId));
+    }
+
+    private List<ProductDTO> thenGetAvailableProductsByIdsFromApi(String ids) {
+        return Arrays.asList(template.getForEntity(String.format("http://localhost:%s/api/v1/products/byIds/%s", port, ids), ProductDTO[].class).getBody());
+    }
+
+    private List<ProductDTO> thenChangeStatusForProductsIdsByAPI(List<Long> ids, Long status) {
+        return Arrays.asList(template.postForEntity(String.format("http://localhost:%s/api/v1/products/changeProductsStatus", port), ProductsStatusChangeDTO.builder().productsId(ids).productStatus(status).build(), ProductDTO[].class).getBody());
     }
 }

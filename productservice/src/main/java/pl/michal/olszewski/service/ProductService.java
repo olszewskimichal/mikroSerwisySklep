@@ -1,15 +1,19 @@
 package pl.michal.olszewski.service;
 
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import pl.michal.olszewski.dto.ProductDTO;
 import pl.michal.olszewski.dto.ProductDefinitionDTO;
+import pl.michal.olszewski.dto.ProductsStatusChangeDTO;
 import pl.michal.olszewski.entity.Product;
 import pl.michal.olszewski.entity.ProductDefinition;
 import pl.michal.olszewski.enums.ProductStatus;
 import pl.michal.olszewski.repository.ProductDefinitionRepository;
 import pl.michal.olszewski.repository.ProductRepository;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -82,4 +86,20 @@ public class ProductService {
         return (Objects.isNull(page) ? 0 : page);
     }
 
+    public List<ProductDTO> getAvailableProducts(String productsIds) {
+        List<Product> products = productRepository.findByProductIds(extractIdsFromString(productsIds));
+        return products.stream().map(ProductDTO::new).collect(Collectors.toList());
+    }
+
+    @Transactional
+    @Modifying
+    public List<ProductDTO> changeProductsStatus(ProductsStatusChangeDTO statusChangeDTO) {
+        List<Product> products = productRepository.findByProductIds(statusChangeDTO.getProductsId());
+        products.forEach(v -> v.setProductStatus(statusChangeDTO.getProductStatus()));
+        return products.stream().map(ProductDTO::new).collect(Collectors.toList());
+    }
+
+    private List<Long> extractIdsFromString(String productsIds) {
+        return Arrays.stream(productsIds.split(",")).map(Long::parseLong).collect(Collectors.toList());
+    }
 }

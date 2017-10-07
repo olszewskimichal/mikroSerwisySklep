@@ -5,8 +5,10 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pl.michal.olszewski.dto.WarehouseDTO;
+import pl.michal.olszewski.dto.WarehouseProductDTO;
 import pl.michal.olszewski.service.WarehouseService;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -54,5 +56,12 @@ public class WarehouseEndPoint {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteWarehouse(@PathVariable("id") Long warehouseId) {
         warehouseService.deleteWarehouse(warehouseId);
+    }
+
+    @PostMapping(value = "/moveProductsToWarehouse")
+    public ResponseEntity<String> moveProductsToWarehouse(@RequestBody WarehouseProductDTO warehouseProductDTO) {
+        return Optional.ofNullable(warehouseService.moveProductsToWarehouse(warehouseProductDTO))
+                .map(v -> ResponseEntity.ok("Poprawnie przeniesiono produkty do magazynu"))
+                .orElse(new ResponseEntity<>("", HttpStatus.NO_CONTENT));
     }
 }

@@ -2,15 +2,13 @@ package pl.michal.olszewski.api;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.context.embedded.LocalServerPort;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.web.client.TestRestTemplate;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.http.ResponseEntity;
+import pl.michal.olszewski.IntegrationTest;
 import pl.michal.olszewski.builders.WarehouseDTOListFactory;
 import pl.michal.olszewski.builders.WarehouseListAssert;
 import pl.michal.olszewski.dto.WarehouseDTO;
+import pl.michal.olszewski.dto.WarehouseProductDTO;
 import pl.michal.olszewski.entity.Warehouse;
 import pl.michal.olszewski.repository.WarehouseRepository;
 
@@ -19,17 +17,10 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@RunWith(SpringRunner.class)
-public class WarehouseApiTest {
-
-    @LocalServerPort
-    public int port;
+public class WarehouseApiTest extends IntegrationTest {
 
     @Autowired
     private WarehouseRepository warehouseRepository;
-
-    private TestRestTemplate template = new TestRestTemplate();
 
     @Before
     public void setUp() {
@@ -128,6 +119,21 @@ public class WarehouseApiTest {
         assertThat(warehouseRepository.findOne(warehouse.getId())).isNull();
     }
 
+    @Test
+    public void should_move_products_to_warehouse() {
+        //given
+        Warehouse warehouse = givenWarehouse()
+                .buildNumberOfWarehousesAndSave(1).get(0);
+        //when
+        thenMoveProductsToWarehouseByApi(WarehouseProductDTO.builder().warehouseId(warehouse.getId()).productsIds(Arrays.asList(1L, 2L)).build());
+
+        //then
+        Warehouse warehouseUpdated = warehouseRepository.findById(warehouse.getId()).get();
+        assertThat(warehouseUpdated).isNotNull();
+        assertThat(warehouseUpdated.getProductIds()).isNotEmpty();
+        assertThat(warehouseUpdated.getProductIds().size()).isEqualTo(2);
+    }
+
 
     private WarehouseDTOListFactory givenWarehouse() {
         return new WarehouseDTOListFactory(warehouseRepository);
@@ -159,5 +165,9 @@ public class WarehouseApiTest {
 
     private void thenDeleteOneWarehouseFromApi(Long productId) {
         template.delete(String.format("http://localhost:%s/api/v1/warehouses/%s", port, productId));
+    }
+
+    private ResponseEntity<String> thenMoveProductsToWarehouseByApi(WarehouseProductDTO warehouseProductDTO) {
+        return template.postForEntity(String.format("http://localhost:%s/api/v1/warehouses/moveProductsToWarehouse", port), warehouseProductDTO, String.class);
     }
 }

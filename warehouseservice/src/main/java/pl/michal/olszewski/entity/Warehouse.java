@@ -4,6 +4,7 @@ import lombok.*;
 import pl.michal.olszewski.dto.WarehouseDTO;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -22,21 +23,16 @@ public class Warehouse {
     @Embedded
     private Address address;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "warehouse", orphanRemoval = true)
-    private Set<ProductAmount> productAmounts;
-
-    public void addProductAmount(ProductAmount productAmount) {
-        productAmounts.add(productAmount);
-        productAmount.setWarehouse(this);
-    }
-
-    public void removeProductAmount(ProductAmount productAmount) {
-        productAmounts.remove(productAmount);
-        productAmount.setAmount(null);
-    }
+    @ElementCollection
+    private Set<Long> productIds;
 
     public Warehouse(@NonNull WarehouseDTO warehouseDTO) {
         this.name = warehouseDTO.getName();
         this.address = new Address(warehouseDTO);
+    }
+
+    public Set<Long> getProductIds() {
+        if (productIds == null) productIds = new HashSet<>();
+        return productIds;
     }
 }

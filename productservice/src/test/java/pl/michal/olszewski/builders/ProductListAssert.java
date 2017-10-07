@@ -27,4 +27,11 @@ public class ProductListAssert extends ListAssert<ProductDTO> {
         return this;
     }
 
+    public ProductListAssert hasProductsStatus(Long productStatus) {
+        for (ProductDTO dto : actual) {
+            org.assertj.core.api.Assertions.assertThat(dto.getProductStatus()).isEqualTo(productStatus);
+        }
+        return this;
+    }
+
 }

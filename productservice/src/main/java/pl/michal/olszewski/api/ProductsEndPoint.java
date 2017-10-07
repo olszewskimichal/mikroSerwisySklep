@@ -5,6 +5,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pl.michal.olszewski.dto.ProductDTO;
+import pl.michal.olszewski.dto.ProductsStatusChangeDTO;
 import pl.michal.olszewski.service.ProductService;
 
 import java.util.List;
@@ -49,5 +50,19 @@ public class ProductsEndPoint {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteProduct(@PathVariable("id") Long productId) {
         service.deleteProduct(productId);
+    }
+
+    @GetMapping(value = "/byIds/{productIds}")
+    public ResponseEntity getAvailableProductsForProductIds(@PathVariable("productIds") String productsIds) {
+        return Optional.ofNullable(service.getAvailableProducts(productsIds))
+                .map(result -> new ResponseEntity<>(result, HttpStatus.OK))
+                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
+
+    @PostMapping(value = "/changeProductsStatus")
+    public ResponseEntity changeProductsStatus(@RequestBody ProductsStatusChangeDTO statusChangeDTO) {
+        return Optional.ofNullable(service.changeProductsStatus(statusChangeDTO))
+                .map(result -> new ResponseEntity<>(result, HttpStatus.OK))
+                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 }

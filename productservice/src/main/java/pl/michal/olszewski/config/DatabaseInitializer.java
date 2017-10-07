@@ -29,7 +29,7 @@ public class DatabaseInitializer implements CommandLineRunner {
         this.productRepository = productRepository;
     }
 
-    public void populate() {
+    private void populate() {
         ProductDefinition productDefinition1 = new ProductDefinition("T-Shirt 1", "Koszulka", null, ProductType.TSHIRT, BigDecimal.ONE);
         ProductDefinition productDefinition2 = new ProductDefinition("Buty 1", "Buty", null, ProductType.SHOES, BigDecimal.TEN);
         ProductDefinition productDefinition3 = new ProductDefinition("Spodnie 1", "Spodnie", null, ProductType.PANTS, BigDecimal.ZERO);

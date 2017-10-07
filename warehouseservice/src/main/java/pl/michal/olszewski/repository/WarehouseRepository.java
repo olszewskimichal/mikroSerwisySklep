@@ -12,10 +12,10 @@ import java.util.Optional;
 
 @Repository
 public interface WarehouseRepository extends JpaRepository<Warehouse, Long> {
-    @Query("select w from Warehouse w left join fetch w.productAmounts where w.name=?1")
+    @Query("select w from Warehouse w left join fetch w.productIds where w.name=?1")
     Optional<Warehouse> findByName(String name);
 
-    @Query("select w from Warehouse w left join fetch w.productAmounts where w.id=?1")
+    @Query("select w from Warehouse w left join fetch w.productIds where w.id=?1")
     Optional<Warehouse> findById(Long id);
 
     @Transactional

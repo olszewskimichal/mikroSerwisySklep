@@ -13,6 +13,8 @@ import pl.michal.olszewski.enums.ProductStatus;
 import pl.michal.olszewski.enums.ProductType;
 
 import java.math.BigDecimal;
+import java.util.List;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -72,5 +74,16 @@ public class ProductRepositoryTest extends JpaTestBase {
         assertThat(products.getNumberOfElements()).isEqualTo(5);
         assertThat(products.getTotalPages()).isEqualTo(2);
         assertThat(products.getContent().size()).isEqualTo(5);
+    }
+
+    @Test
+    public void shouldGetProductsByIds() {
+        //given
+        IntStream.range(0, 5).forEach(v -> this.entityManager.persistAndFlush(new Product(productDefinition, ProductStatus.IN_STORE)));
+        List<Product> products = productRepository.findAll();
+        //when
+        List<Product> productByIds = productRepository.findByProductIds(products.stream().map(Product::getId).collect(Collectors.toList()));
+        //then
+        assertThat(products).isEqualTo(productByIds);
     }
 }

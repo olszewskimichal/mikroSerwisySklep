@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import pl.michal.olszewski.api.WarehouseEndPoint;
 import pl.michal.olszewski.dto.WarehouseDTO;
+import pl.michal.olszewski.dto.WarehouseProductDTO;
 import pl.michal.olszewski.service.WarehouseService;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -69,6 +70,26 @@ public class WarehousesEndPointTest {
         assertThat(warehouse).isNotNull();
         assertThat(warehouse.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
         assertThat(warehouse.getBody()).isNull();
+    }
+
+    @Test
+    public void shouldMoveProductsToWarehouse() {
+        given(service.moveProductsToWarehouse(WarehouseProductDTO.builder().build())).willReturn(true);
+
+        ResponseEntity<String> responseEntity = endPoint.moveProductsToWarehouse(WarehouseProductDTO.builder().build());
+
+        assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(responseEntity.getBody()).isNotEmpty();
+    }
+
+    @Test
+    public void shouldNotMoveProductsToWarehouseOnError() {
+        given(service.moveProductsToWarehouse(WarehouseProductDTO.builder().build())).willReturn(null);
+
+        ResponseEntity<String> responseEntity = endPoint.moveProductsToWarehouse(WarehouseProductDTO.builder().build());
+
+        assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.NO_CONTENT);
+        assertThat(responseEntity.getBody()).isEmpty();
     }
 
 }
