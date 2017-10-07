@@ -9,6 +9,7 @@
 	<modules>
 		<module>productservice</module>
         <module>warehouseservice</module>
+        <module>storeservice</module>
     </modules>
 	<packaging>pom</packaging>
 
