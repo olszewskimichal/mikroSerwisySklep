@@ -41,6 +41,17 @@ public class ProductDefinitionsEndPointTest {
     }
 
     @Test
+    public void shouldNotReturnProductByIdWhenNotExist() {
+        given(service.getProductDefinition(1L)).willReturn(null);
+
+        ResponseEntity<ProductDefinitionDTO> productDefinition = endPoint.getProductDefinition(1L);
+
+        assertThat(productDefinition).isNotNull();
+        assertThat(productDefinition.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
+        assertThat(productDefinition.getBody()).isNull();
+    }
+
+    @Test
     public void shouldReturnProductByName() {
         given(service.getProductDefinitionByName("nazwa3")).willReturn(ProductDefinitionDTO.builder().name("nazwa3").price(BigDecimal.TEN).build());
 
@@ -49,6 +60,17 @@ public class ProductDefinitionsEndPointTest {
         assertThat(productDefinition).isNotNull();
         assertThat(productDefinition.getStatusCode()).isEqualTo(HttpStatus.OK);
         assertThat(productDefinition.getBody().getName()).isEqualTo("nazwa3");
+    }
+
+    @Test
+    public void shouldNotReturnProductByNameWhenNotExist() {
+        given(service.getProductDefinitionByName("nazwa3")).willReturn(null);
+
+        ResponseEntity<ProductDefinitionDTO> productDefinition = endPoint.getProductDefinitionByName("nazwa3");
+
+        assertThat(productDefinition).isNotNull();
+        assertThat(productDefinition.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
+        assertThat(productDefinition.getBody()).isNull();
     }
 
 }
