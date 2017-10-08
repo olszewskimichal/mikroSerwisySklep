@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import pl.michal.olszewski.api.StoreEndPoint;
 import pl.michal.olszewski.dto.StoreDTO;
+import pl.michal.olszewski.dto.StoreProductDTO;
 import pl.michal.olszewski.service.StoreService;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -69,6 +70,46 @@ public class StoresEndPointTest {
         assertThat(store).isNotNull();
         assertThat(store.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
         assertThat(store.getBody()).isNull();
+    }
+
+    @Test
+    public void shouldMoveProductsToStore() {
+        given(service.moveProductsToStore(StoreProductDTO.builder().build())).willReturn(true);
+
+        ResponseEntity<String> responseEntity = endPoint.moveProductsToStore(StoreProductDTO.builder().build());
+
+        assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(responseEntity.getBody()).isNotEmpty();
+    }
+
+    @Test
+    public void shouldNotMoveProductsToStoreOnError() {
+        given(service.moveProductsToStore(StoreProductDTO.builder().build())).willReturn(null);
+
+        ResponseEntity<String> responseEntity = endPoint.moveProductsToStore(StoreProductDTO.builder().build());
+
+        assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.NO_CONTENT);
+        assertThat(responseEntity.getBody()).isEmpty();
+    }
+
+    @Test
+    public void shouldRemoveProductsFromStore() {
+        given(service.removeProductsFromStore(StoreProductDTO.builder().build())).willReturn(true);
+
+        ResponseEntity<String> responseEntity = endPoint.removeProductsFromStore(StoreProductDTO.builder().build());
+
+        assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(responseEntity.getBody()).isNotEmpty();
+    }
+
+    @Test
+    public void shouldNotRemoveProductsFromStore() {
+        given(service.removeProductsFromStore(StoreProductDTO.builder().build())).willReturn(null);
+
+        ResponseEntity<String> responseEntity = endPoint.removeProductsFromStore(StoreProductDTO.builder().build());
+
+        assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.NO_CONTENT);
+        assertThat(responseEntity.getBody()).isEmpty();
     }
 
 }
