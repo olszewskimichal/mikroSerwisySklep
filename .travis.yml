@@ -14,6 +14,6 @@ jobs:
   include:
     - stage: test
       script:
-        - mvn verify
+        - mvn test -B
       after_success:
        - bash <(curl -s https://codecov.io/bash)
