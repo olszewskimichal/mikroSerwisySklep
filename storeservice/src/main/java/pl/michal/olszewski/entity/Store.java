@@ -1,6 +1,7 @@
 package pl.michal.olszewski.entity;
 
 import lombok.*;
+import pl.michal.olszewski.dto.StoreDTO;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -25,6 +26,11 @@ public class Store {
 
     @ElementCollection
     private Set<Long> productIds;
+
+    public Store(@NonNull StoreDTO storeDTO) {
+        this.name = storeDTO.getName();
+        this.address = new Address(storeDTO);
+    }
 
     public Set<Long> getProductIds() {
         if (productIds == null) productIds = new HashSet<>();
