@@ -87,8 +87,8 @@ public class WarehouseService {
             List<ProductDTO> products = productService.getAvailableProductsForWarehouseFromApi(productsId);
             List<Long> productIds = productService.filterProductsForStatus(products, ProductStatus.availableForMoveToWarehouseStatuses).stream().map(ProductDTO::getProductId).collect(Collectors.toList());
             List<Long> productIdsForRemoveFromStore = productService.filterProductsForStatus(products, Collections.singletonList(ProductStatus.IN_STORE)).stream().map(ProductDTO::getProductId).collect(Collectors.toList());
-            productService.changeProductsStatus(ProductsStatusChangeDTO.builder().productsId(productIds).productStatus(ProductStatus.IN_WAREHOUSE.getValue()).build());
             storeService.removeProductsFromStore(StoreProductDTO.builder().productsIds(productIdsForRemoveFromStore).build());
+            productService.changeProductsStatus(ProductsStatusChangeDTO.builder().productsId(productIds).productStatus(ProductStatus.IN_WAREHOUSE.getValue()).build());
             warehouse.getProductIds().addAll(productIds);
         });
         return true;
