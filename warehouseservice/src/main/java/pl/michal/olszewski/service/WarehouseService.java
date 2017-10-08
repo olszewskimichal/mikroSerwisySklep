@@ -76,4 +76,8 @@ public class WarehouseService {
     private int getPage(final Integer page) {
         return (Objects.isNull(page) ? 0 : page);
     }
+
+    public Boolean removeProductsFromWarehouse(WarehouseProductDTO warehouseProductDTO) {
+        return false;
+    }
 }

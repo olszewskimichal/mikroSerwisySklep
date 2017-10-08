@@ -8,6 +8,7 @@ import pl.michal.olszewski.IntegrationTest;
 import pl.michal.olszewski.builders.StoreDTOListFactory;
 import pl.michal.olszewski.builders.StoreListAssert;
 import pl.michal.olszewski.dto.StoreDTO;
+import pl.michal.olszewski.dto.StoreProductDTO;
 import pl.michal.olszewski.entity.Store;
 import pl.michal.olszewski.repository.StoreRepository;
 
@@ -118,6 +119,38 @@ public class StoreApiTest extends IntegrationTest {
         assertThat(storeRepository.findOne(store.getId())).isNull();
     }
 
+    @Test
+    public void should_move_products_to_store() {
+        //given
+        Store store = givenStore()
+                .buildNumberOfStoresAndSave(1).get(0);
+        //when
+        thenMoveProductsToStoreByApi(StoreProductDTO.builder().storeId(store.getId()).productsIds(Arrays.asList(1L, 2L)).build());
+
+        //then
+        Store storeUpdated = storeRepository.findById(store.getId()).get();
+        assertThat(storeUpdated).isNotNull();
+        assertThat(storeUpdated.getProductIds()).isNotEmpty();
+        assertThat(storeUpdated.getProductIds().size()).isEqualTo(2);
+    }
+
+    @Test
+    public void should_remove_products_from_store() {
+        //given
+        Store store = givenStore()
+                .buildNumberOfStoresAndSave(1).get(0);
+        store.getProductIds().addAll(Arrays.asList(1L, 2L));
+        storeRepository.save(store);
+        assertThat(store.getProductIds().size()).isEqualTo(2);
+        //when
+        thenRemoveProductsFromStoreByApi(StoreProductDTO.builder().storeId(store.getId()).productsIds(Arrays.asList(1L, 2L)).build());
+        //then
+        Store storeUpdated = storeRepository.findById(store.getId()).get();
+        assertThat(storeUpdated).isNotNull();
+        assertThat(storeUpdated.getProductIds()).isEmpty();
+        assertThat(storeUpdated.getProductIds().size()).isEqualTo(0);
+    }
+
     private StoreDTOListFactory givenStore() {
         return new StoreDTOListFactory(storeRepository);
     }
@@ -148,5 +181,13 @@ public class StoreApiTest extends IntegrationTest {
 
     private void thenDeleteOneStoreFromApi(Long productId) {
         template.delete(String.format("http://localhost:%s/api/v1/stores/%s", port, productId));
+    }
+
+    private ResponseEntity<String> thenMoveProductsToStoreByApi(StoreProductDTO storeProductDTO) {
+        return template.postForEntity(String.format("http://localhost:%s/api/v1/stores/moveProductsToStore", port), storeProductDTO, String.class);
+    }
+
+    private ResponseEntity<String> thenRemoveProductsFromStoreByApi(StoreProductDTO storeProductDTO) {
+        return template.postForEntity(String.format("http://localhost:%s/api/v1/stores/removeProductsFromStore", port), storeProductDTO, String.class);
     }
 }

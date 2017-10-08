@@ -9,6 +9,8 @@ import pl.michal.olszewski.entity.Warehouse;
 import pl.michal.olszewski.repository.WarehouseRepository;
 
 import java.util.Arrays;
+import java.util.HashSet;
+import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -48,6 +50,20 @@ public class WarehouseServiceIntegrationTest extends IntegrationTest {
         //then
         Warehouse warehouseRepositoryOne = warehouseRepository.findById(warehouse.getId()).get();
         assertThat(warehouseRepositoryOne.getProductIds().size()).isEqualTo(0);
+    }
+
+    @Test
+    public void shouldRemoveProductsFromWarehouse() {
+        //given
+        warehouseRepository.deleteAll();
+        Warehouse warehouse = Warehouse.builder().name("test").productIds(new HashSet<>(Arrays.asList(1L, 2L, 3L))).address(Address.builder().city("city").country("PL").street("str").zipCode("zip").build()).build();
+        warehouseRepository.save(warehouse);
+        WarehouseProductDTO warehouseProductDTO = WarehouseProductDTO.builder().warehouseId(warehouse.getId()).productsIds(Arrays.asList(1L, 2L)).build();
+        //when
+        warehouseService.removeProductsFromWarehouse(warehouseProductDTO);
+        //then
+        Warehouse warehouseRepositoryOne = warehouseRepository.findById(warehouse.getId()).get();
+        assertThat(warehouseRepositoryOne.getProductIds().size()).isEqualTo(1);
     }
 
 }
