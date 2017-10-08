@@ -64,4 +64,11 @@ public class WarehouseEndPoint {
                 .map(v -> ResponseEntity.ok("Poprawnie przeniesiono produkty do magazynu"))
                 .orElse(new ResponseEntity<>("", HttpStatus.NO_CONTENT));
     }
+
+    @PostMapping(value = "/removeProductsFromWarehouse")
+    public ResponseEntity<String> removeProductsFromWarehouse(@RequestBody WarehouseProductDTO warehouseProductDTO) {
+        return Optional.ofNullable(warehouseService.removeProductsFromWarehouse(warehouseProductDTO))
+                .map(v -> ResponseEntity.ok("Poprawnie usunieto produkty z magazynu"))
+                .orElse(new ResponseEntity<>("", HttpStatus.NO_CONTENT));
+    }
 }

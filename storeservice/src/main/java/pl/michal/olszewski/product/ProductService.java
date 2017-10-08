@@ -5,7 +5,7 @@ import pl.michal.olszewski.dto.ProductsStatusChangeDTO;
 import java.util.List;
 
 public interface ProductService {
-    List<ProductDTO> getAvailableProductsForWarehouseFromApi(String productsId);
+    List<ProductDTO> getAvailableProductsForStoreFromApi(String productsId);
 
     List<ProductDTO> changeProductsStatus(ProductsStatusChangeDTO statusChangeDTO);
 

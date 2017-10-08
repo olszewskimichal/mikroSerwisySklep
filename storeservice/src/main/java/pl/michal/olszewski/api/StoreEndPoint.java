@@ -5,6 +5,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pl.michal.olszewski.dto.StoreDTO;
+import pl.michal.olszewski.dto.StoreProductDTO;
 import pl.michal.olszewski.service.StoreService;
 
 import java.util.List;
@@ -56,5 +57,18 @@ public class StoreEndPoint {
         storeService.deleteStore(storeId);
     }
 
+    @PostMapping(value = "/moveProductsToStore")
+    public ResponseEntity<String> moveProductsToStore(@RequestBody StoreProductDTO storeProductDTO) {
+        return Optional.ofNullable(storeService.moveProductsToStore(storeProductDTO))
+                .map(v -> ResponseEntity.ok("Poprawnie przeniesiono produkty do magazynu"))
+                .orElse(new ResponseEntity<>("", HttpStatus.NO_CONTENT));
+    }
+
+    @PostMapping(value = "/removeProductsFromStore")
+    public ResponseEntity<String> removeProductsFromStore(@RequestBody StoreProductDTO storeProductDTO) {
+        return Optional.ofNullable(storeService.removeProductsFromStore(storeProductDTO))
+                .map(v -> ResponseEntity.ok("Poprawnie usunieto produkty z magazynu"))
+                .orElse(new ResponseEntity<>("", HttpStatus.NO_CONTENT));
+    }
 
 }

@@ -125,7 +125,7 @@ public class StoreApiTest extends IntegrationTest {
         Store store = givenStore()
                 .buildNumberOfStoresAndSave(1).get(0);
         //when
-        thenMoveProductsToStoreByApi(StoreProductDTO.builder().storeId(store.getId()).productsIds(Arrays.asList(1L, 2L)).build());
+        thenMoveProductsToStoreByApi(StoreProductDTO.builder().storeId(store.getId()).productsIds(Arrays.asList(1L, 0L)).build());
 
         //then
         Store storeUpdated = storeRepository.findById(store.getId()).get();
@@ -139,11 +139,11 @@ public class StoreApiTest extends IntegrationTest {
         //given
         Store store = givenStore()
                 .buildNumberOfStoresAndSave(1).get(0);
-        store.getProductIds().addAll(Arrays.asList(1L, 2L));
+        store.getProductIds().addAll(Arrays.asList(3L));
         storeRepository.save(store);
-        assertThat(store.getProductIds().size()).isEqualTo(2);
+        assertThat(store.getProductIds().size()).isEqualTo(1);
         //when
-        thenRemoveProductsFromStoreByApi(StoreProductDTO.builder().storeId(store.getId()).productsIds(Arrays.asList(1L, 2L)).build());
+        thenRemoveProductsFromStoreByApi(StoreProductDTO.builder().storeId(store.getId()).productsIds(Arrays.asList(3L)).build());
         //then
         Store storeUpdated = storeRepository.findById(store.getId()).get();
         assertThat(storeUpdated).isNotNull();

@@ -6,6 +6,7 @@ import pl.michal.olszewski.IntegrationTest;
 import pl.michal.olszewski.dto.WarehouseProductDTO;
 import pl.michal.olszewski.entity.Address;
 import pl.michal.olszewski.entity.Warehouse;
+import pl.michal.olszewski.product.ProductDTO;
 import pl.michal.olszewski.repository.WarehouseRepository;
 
 import java.util.Arrays;
@@ -27,7 +28,7 @@ public class WarehouseServiceIntegrationTest extends IntegrationTest {
         //given
         warehouseRepository.deleteAll();
         Warehouse warehouse = warehouseRepository.save(Warehouse.builder().name("test").address(Address.builder().city("city").country("PL").street("str").zipCode("zip").build()).build());
-        WarehouseProductDTO warehouseProductDTO = WarehouseProductDTO.builder().warehouseId(warehouse.getId()).productsIds(Arrays.asList(1L, 2L)).build();
+        WarehouseProductDTO warehouseProductDTO = WarehouseProductDTO.builder().warehouseId(warehouse.getId()).productsIds(Arrays.asList(0L, 1L, 2L, 3L, 4L, 5L, 6L)).build();
         //when
         warehouseService.moveProductsToWarehouse(warehouseProductDTO);
         //then
@@ -40,7 +41,7 @@ public class WarehouseServiceIntegrationTest extends IntegrationTest {
         //given
         warehouseRepository.deleteAll();
         Warehouse warehouse = warehouseRepository.save(Warehouse.builder().name("test").address(Address.builder().city("city").country("PL").street("str").zipCode("zip").build()).build());
-        WarehouseProductDTO warehouseProductDTO = WarehouseProductDTO.builder().warehouseId(warehouse.getId()).productsIds(Arrays.asList(1L, 2L, 3L)).build();
+        WarehouseProductDTO warehouseProductDTO = WarehouseProductDTO.builder().warehouseId(warehouse.getId()).productsIds(Arrays.asList(0L, 0L, 2L, 3L)).build();
         //when
         try {
             warehouseService.moveProductsToWarehouse(warehouseProductDTO);
@@ -58,12 +59,12 @@ public class WarehouseServiceIntegrationTest extends IntegrationTest {
         warehouseRepository.deleteAll();
         Warehouse warehouse = Warehouse.builder().name("test").productIds(new HashSet<>(Arrays.asList(1L, 2L, 3L))).address(Address.builder().city("city").country("PL").street("str").zipCode("zip").build()).build();
         warehouseRepository.save(warehouse);
-        WarehouseProductDTO warehouseProductDTO = WarehouseProductDTO.builder().warehouseId(warehouse.getId()).productsIds(Arrays.asList(1L, 2L)).build();
+        WarehouseProductDTO warehouseProductDTO = WarehouseProductDTO.builder().warehouseId(warehouse.getId()).productsIds(Arrays.asList(1L)).build();
         //when
         warehouseService.removeProductsFromWarehouse(warehouseProductDTO);
         //then
         Warehouse warehouseRepositoryOne = warehouseRepository.findById(warehouse.getId()).get();
-        assertThat(warehouseRepositoryOne.getProductIds().size()).isEqualTo(1);
+        assertThat(warehouseRepositoryOne.getProductIds().size()).isEqualTo(2);
     }
 
 }

@@ -10,14 +10,13 @@ import pl.michal.olszewski.product.ProductStatus;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
 
 @Service
 @Profile("test")
 public class MockProductService implements ProductService {
     @Override
-    public List<ProductDTO> getAvailableProductsForWarehouseFromApi(String productsId) {
+    public List<ProductDTO> getAvailableProductsForStoreFromApi(String productsId) {
         return Arrays.stream(productsId.split(",")).map(v -> ProductDTO.builder().productId(Long.parseLong(v)).productStatus(Long.parseLong(v)).build()).collect(Collectors.toList());
     }
 
