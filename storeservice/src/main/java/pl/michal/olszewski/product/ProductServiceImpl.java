@@ -25,7 +25,7 @@ public class ProductServiceImpl implements ProductService {
      * @param productsId
      * @return
      */
-    public List<ProductDTO> getAvailableProductsForWarehouseFromApi(String productsId) {
+    public List<ProductDTO> getAvailableProductsForStoreFromApi(String productsId) {
         return Arrays.asList(restTemplate.getForObject("http://localhost:8080/api/v1/products/byIds/" + productsId, ProductDTO[].class));
     }
 

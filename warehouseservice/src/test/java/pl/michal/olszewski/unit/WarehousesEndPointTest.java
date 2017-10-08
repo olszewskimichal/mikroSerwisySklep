@@ -92,4 +92,24 @@ public class WarehousesEndPointTest {
         assertThat(responseEntity.getBody()).isEmpty();
     }
 
+    @Test
+    public void shouldRemoveProductsFromWarehouse() {
+        given(service.removeProductsFromWarehouse(WarehouseProductDTO.builder().build())).willReturn(true);
+
+        ResponseEntity<String> responseEntity = endPoint.removeProductsFromWarehouse(WarehouseProductDTO.builder().build());
+
+        assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(responseEntity.getBody()).isNotEmpty();
+    }
+
+    @Test
+    public void shouldNotRemoveProductsFromWarehouse() {
+        given(service.removeProductsFromWarehouse(WarehouseProductDTO.builder().build())).willReturn(null);
+
+        ResponseEntity<String> responseEntity = endPoint.removeProductsFromWarehouse(WarehouseProductDTO.builder().build());
+
+        assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.NO_CONTENT);
+        assertThat(responseEntity.getBody()).isEmpty();
+    }
+
 }

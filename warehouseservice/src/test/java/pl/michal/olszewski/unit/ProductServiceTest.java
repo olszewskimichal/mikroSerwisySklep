@@ -40,9 +40,10 @@ public class ProductServiceTest {
         given(restTemplate.getForObject("http://localhost:8080/api/v1/products/byIds/" + "1,2,3,4", ProductDTO[].class)).willReturn((ProductDTO[]) products.toArray());
 
         //when
-        List<ProductDTO> productDTOS = service.getAvailibleProductsForWarehouseFromApi("1,2,3,4");
+        List<ProductDTO> productDTOS = service.getAvailableProductsForWarehouseFromApi("1,2,3,4");
+        List<ProductDTO> productDTOList = service.filterProductsForStatus(productDTOS, Arrays.asList(ProductStatus.NEW, ProductStatus.IN_STORE));
         //then
-        assertThat(productDTOS.size()).isEqualTo(2);
+        assertThat(productDTOList.size()).isEqualTo(2);
 
     }
 }

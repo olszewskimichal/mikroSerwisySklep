@@ -13,6 +13,7 @@ import pl.michal.olszewski.entity.Warehouse;
 import pl.michal.olszewski.repository.WarehouseRepository;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -125,13 +126,30 @@ public class WarehouseApiTest extends IntegrationTest {
         Warehouse warehouse = givenWarehouse()
                 .buildNumberOfWarehousesAndSave(1).get(0);
         //when
-        thenMoveProductsToWarehouseByApi(WarehouseProductDTO.builder().warehouseId(warehouse.getId()).productsIds(Arrays.asList(1L, 2L)).build());
+        thenMoveProductsToWarehouseByApi(WarehouseProductDTO.builder().warehouseId(warehouse.getId()).productsIds(Arrays.asList(0L, 1L, 2L, 3L)).build());
 
         //then
         Warehouse warehouseUpdated = warehouseRepository.findById(warehouse.getId()).get();
         assertThat(warehouseUpdated).isNotNull();
         assertThat(warehouseUpdated.getProductIds()).isNotEmpty();
         assertThat(warehouseUpdated.getProductIds().size()).isEqualTo(2);
+    }
+
+    @Test
+    public void should_remove_products_from_warehouse() {
+        //given
+        Warehouse warehouse = givenWarehouse()
+                .buildNumberOfWarehousesAndSave(1).get(0);
+        warehouse.getProductIds().addAll(Collections.singletonList(1L));
+        warehouseRepository.save(warehouse);
+        //when
+        thenRemoveProductsFromWarehouseByApi(WarehouseProductDTO.builder().warehouseId(warehouse.getId()).productsIds(Collections.singletonList(1L)).build());
+
+        //then
+        Warehouse warehouseUpdated = warehouseRepository.findById(warehouse.getId()).get();
+        assertThat(warehouseUpdated).isNotNull();
+        assertThat(warehouseUpdated.getProductIds()).isEmpty();
+        assertThat(warehouseUpdated.getProductIds().size()).isEqualTo(0);
     }
 
 
@@ -169,5 +187,9 @@ public class WarehouseApiTest extends IntegrationTest {
 
     private ResponseEntity<String> thenMoveProductsToWarehouseByApi(WarehouseProductDTO warehouseProductDTO) {
         return template.postForEntity(String.format("http://localhost:%s/api/v1/warehouses/moveProductsToWarehouse", port), warehouseProductDTO, String.class);
+    }
+
+    private ResponseEntity<String> thenRemoveProductsFromWarehouseByApi(WarehouseProductDTO warehouseProductDTO) {
+        return template.postForEntity(String.format("http://localhost:%s/api/v1/warehouses/removeProductsFromWarehouse", port), warehouseProductDTO, String.class);
     }
 }
