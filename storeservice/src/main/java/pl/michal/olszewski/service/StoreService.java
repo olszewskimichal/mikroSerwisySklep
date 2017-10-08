@@ -91,8 +91,8 @@ public class StoreService {
             List<ProductDTO> products = productService.getAvailableProductsForStoreFromApi(productsId);
             List<Long> productIds = productService.filterProductsForStatus(products, ProductStatus.availableForMoveToStoreStatuses).stream().map(ProductDTO::getProductId).collect(Collectors.toList());
             List<Long> productIdsForRemoveFromWarehouse = productService.filterProductsForStatus(products, Collections.singletonList(ProductStatus.IN_WAREHOUSE)).stream().map(ProductDTO::getProductId).collect(Collectors.toList());
-            productService.changeProductsStatus(ProductsStatusChangeDTO.builder().productsId(productIds).productStatus(ProductStatus.IN_STORE.getValue()).build());
             warehouseService.removeProductsFromWarehouse(WarehouseProductDTO.builder().productsIds(productIdsForRemoveFromWarehouse).build());
+            productService.changeProductsStatus(ProductsStatusChangeDTO.builder().productsId(productIds).productStatus(ProductStatus.IN_STORE.getValue()).build());
             store.getProductIds().addAll(productIds);
         });
         return true;
