@@ -7,11 +7,11 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.michal.olszewski.entity.Product;
-import pl.michal.olszewski.repository.ProductRepository;
-import pl.michal.olszewski.enums.ProductStatus;
 import pl.michal.olszewski.entity.ProductDefinition;
-import pl.michal.olszewski.repository.ProductDefinitionRepository;
+import pl.michal.olszewski.enums.ProductStatus;
 import pl.michal.olszewski.enums.ProductType;
+import pl.michal.olszewski.repository.ProductDefinitionRepository;
+import pl.michal.olszewski.repository.ProductRepository;
 
 import java.math.BigDecimal;
 

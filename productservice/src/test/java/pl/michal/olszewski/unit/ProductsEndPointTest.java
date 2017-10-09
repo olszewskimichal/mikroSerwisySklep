@@ -5,10 +5,10 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import pl.michal.olszewski.api.ProductsEndPoint;
 import pl.michal.olszewski.dto.ProductDTO;
 import pl.michal.olszewski.enums.ProductStatus;
 import pl.michal.olszewski.service.ProductService;
-import pl.michal.olszewski.api.ProductsEndPoint;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;

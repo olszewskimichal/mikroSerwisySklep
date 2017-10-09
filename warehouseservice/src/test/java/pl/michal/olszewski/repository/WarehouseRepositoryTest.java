@@ -4,7 +4,6 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import pl.michal.olszewski.JpaTestBase;
 import pl.michal.olszewski.dto.WarehouseDTO;
-import pl.michal.olszewski.entity.Address;
 import pl.michal.olszewski.entity.Warehouse;
 
 import java.util.Optional;

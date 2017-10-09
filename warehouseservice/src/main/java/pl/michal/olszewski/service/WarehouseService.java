@@ -15,7 +15,10 @@ import pl.michal.olszewski.product.ProductStatus;
 import pl.michal.olszewski.repository.WarehouseRepository;
 import pl.michal.olszewski.store.StoreService;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service

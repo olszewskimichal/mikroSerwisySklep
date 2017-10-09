@@ -8,7 +8,6 @@ import pl.michal.olszewski.dto.WarehouseDTO;
 import pl.michal.olszewski.dto.WarehouseProductDTO;
 import pl.michal.olszewski.service.WarehouseService;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
