@@ -95,8 +95,7 @@ public class StoreApiTest extends IntegrationTest {
         //given
         Store store = givenStore()
                 .buildNumberOfStoresAndSave(1).get(0);
-        StoreDTO storeDTO = new StoreDTO(store.getName(), store.getAddress());
-        storeDTO.setName("nazwa nowa");
+        StoreDTO storeDTO = new StoreDTO("nazwa nowa", store.getAddress());
 
         //when
         thenUpdateStoreByApi(store.getId(), storeDTO);

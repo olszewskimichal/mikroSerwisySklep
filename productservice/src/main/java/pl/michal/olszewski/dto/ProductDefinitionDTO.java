@@ -1,7 +1,10 @@
 package pl.michal.olszewski.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NonNull;
 import pl.michal.olszewski.entity.ProductDefinition;
 
 import javax.xml.bind.annotation.XmlTransient;
@@ -9,18 +12,17 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
 @Builder
 public class ProductDefinitionDTO implements Serializable {
     @XmlTransient
     @JsonIgnore
-    private Long id;
-    private String name;
-    private String description;
-    private String imageUrl;
-    private Long prodType;
-    private BigDecimal price;
+    private final Long id;
+    private final String name;
+    private final String description;
+    private final String imageUrl;
+    private final Long prodType;
+    private final BigDecimal price;
 
     public ProductDefinitionDTO(@NonNull ProductDefinition productDefinition) {
         this.id = productDefinition.getId();

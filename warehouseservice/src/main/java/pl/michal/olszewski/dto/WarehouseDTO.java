@@ -1,22 +1,24 @@
 package pl.michal.olszewski.dto;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NonNull;
 import pl.michal.olszewski.entity.Address;
 
 import java.io.Serializable;
 
 @Data
 @Builder
-@NoArgsConstructor
 @AllArgsConstructor
 public class WarehouseDTO implements Serializable {
-    private String name;
+    private final String name;
     //addres
-    private String street;
-    private String state;
-    private String city;
-    private String country;
-    private String zipCode;
+    private final String street;
+    private final String state;
+    private final String city;
+    private final String country;
+    private final String zipCode;
 
     public WarehouseDTO(String name, @NonNull Address address) {
         this.name = name;

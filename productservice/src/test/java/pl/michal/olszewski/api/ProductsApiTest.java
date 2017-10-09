@@ -95,15 +95,15 @@ public class ProductsApiTest extends IntegrationTest {
     @Test
     public void should_update_existing_product() {
         //given
-        ProductDTO productDTO = givenProduct()
-                .buildNumberOfProductsAndSave(1, productDefinition, ProductStatus.LIQUIDATION).get(0);
-        productDTO.setProductStatus(ProductStatus.IN_STORE.getValue());
+        Long id = givenProduct()
+                .buildNumberOfProductsAndSave(1, productDefinition, ProductStatus.LIQUIDATION).get(0).getProductId();
+        ProductDTO productDTO = ProductDTOListFactory.getNotPersistedProducts(1, productDefinition, ProductStatus.IN_STORE).get(0);
 
         //when
-        thenUpdateProductByApi(productDTO.getProductId(), productDTO);
+        thenUpdateProductByApi(id, productDTO);
 
         //then
-        assertThat(realProductRepository.findByIdFetchProductDetails(productDTO.getProductId()))
+        assertThat(realProductRepository.findByIdFetchProductDetails(id))
                 .isNotNull()
                 .hasFieldOrPropertyWithValue("productStatus", ProductStatus.IN_STORE.getValue());
     }
@@ -137,7 +137,7 @@ public class ProductsApiTest extends IntegrationTest {
         List<Long> idList = givenProduct()
                 .buildNumberOfProductsAndSave(6, productDefinition, ProductStatus.NEW).stream().map(ProductDTO::getProductId).collect(Collectors.toList());
 
-        List<ProductDTO> products = thenChangeStatusForProductsIdsByAPI(idList,ProductStatus.IN_WAREHOUSE.getValue());
+        List<ProductDTO> products = thenChangeStatusForProductsIdsByAPI(idList, ProductStatus.IN_WAREHOUSE.getValue());
 
         ProductListAssert.assertThat(products)
                 .isSuccessful()
