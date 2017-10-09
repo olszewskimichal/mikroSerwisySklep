@@ -7,6 +7,8 @@ import pl.michal.olszewski.IntegrationTest;
 import pl.michal.olszewski.builders.ProductDefinitionListAssert;
 import pl.michal.olszewski.builders.ProductDefinitionsDTOListFactory;
 import pl.michal.olszewski.dto.ProductDefinitionDTO;
+import pl.michal.olszewski.entity.ProductDefinition;
+import pl.michal.olszewski.enums.ProductType;
 import pl.michal.olszewski.repository.ProductDefinitionRepository;
 import pl.michal.olszewski.repository.ProductRepository;
 
@@ -99,10 +101,10 @@ public class ProductDefinitionsApiTest extends IntegrationTest {
         //given
         ProductDefinitionDTO productDefinitionDTO = givenProductDefinition()
                 .buildNumberOfProductDefinitionsAndSave(1).get(0);
-        productDefinitionDTO.setProdType(PANTS.getValue());
+        ProductDefinition productDefinition = ProductDefinition.builder().name(productDefinitionDTO.getName()).prodType(ProductType.PANTS.getValue()).price(BigDecimal.TEN.setScale(2, BigDecimal.ROUND_HALF_UP)).build();
 
         //when
-        thenUpdateProductDefinitionByApi(productDefinitionDTO.getId(), productDefinitionDTO);
+        thenUpdateProductDefinitionByApi(productDefinitionDTO.getId(), new ProductDefinitionDTO(productDefinition));
 
         //then
         assertThat(productDefinitionRepository.findByName(productDefinitionDTO.getName()))

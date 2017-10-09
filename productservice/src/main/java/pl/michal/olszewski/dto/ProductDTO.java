@@ -1,18 +1,20 @@
 package pl.michal.olszewski.dto;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NonNull;
 import pl.michal.olszewski.entity.Product;
 
 import java.io.Serializable;
 
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
 @Builder
 public class ProductDTO implements Serializable {
-    private Long productId;
-    private Long productDefinition;
-    private Long productStatus;
+    private final Long productId;
+    private final Long productDefinition;
+    private final Long productStatus;
 
     public ProductDTO(@NonNull Product product) {
         this.productId = product.getId();

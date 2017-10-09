@@ -96,8 +96,7 @@ public class WarehouseApiTest extends IntegrationTest {
         //given
         Warehouse warehouse = givenWarehouse()
                 .buildNumberOfWarehousesAndSave(1).get(0);
-        WarehouseDTO warehouseDTO = new WarehouseDTO(warehouse.getName(), warehouse.getAddress());
-        warehouseDTO.setName("nazwa nowa");
+        WarehouseDTO warehouseDTO = new WarehouseDTO("nazwa nowa", warehouse.getAddress());
 
         //when
         thenUpdateWarehouseByApi(warehouse.getId(), warehouseDTO);
