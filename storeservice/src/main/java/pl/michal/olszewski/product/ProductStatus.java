@@ -15,8 +15,7 @@ public enum ProductStatus {
     LIQUIDATION(5L, "Zlikwidowany"),
     SOLD(6L, "Sprzedany");
 
-    public static List<ProductStatus> availableForMoveToStoreStatuses = Arrays.asList(NEW, IN_WAREHOUSE);
-    public static List<ProductStatus> availableForMoveToWarehouseStatuses = Arrays.asList(NEW, IN_STORE);
+    public static final List<ProductStatus> availableForMoveToStoreStatuses = Arrays.asList(NEW, IN_WAREHOUSE);
 
     private final Long value;
     private final String description;

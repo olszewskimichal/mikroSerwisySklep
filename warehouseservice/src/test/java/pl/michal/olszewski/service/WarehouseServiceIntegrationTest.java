@@ -6,12 +6,10 @@ import pl.michal.olszewski.IntegrationTest;
 import pl.michal.olszewski.dto.WarehouseProductDTO;
 import pl.michal.olszewski.entity.Address;
 import pl.michal.olszewski.entity.Warehouse;
-import pl.michal.olszewski.product.ProductDTO;
 import pl.michal.olszewski.repository.WarehouseRepository;
 
 import java.util.Arrays;
 import java.util.HashSet;
-import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

@@ -7,7 +7,6 @@ import pl.michal.olszewski.IntegrationTest;
 import pl.michal.olszewski.builders.ProductDefinitionListAssert;
 import pl.michal.olszewski.builders.ProductDefinitionsDTOListFactory;
 import pl.michal.olszewski.dto.ProductDefinitionDTO;
-import pl.michal.olszewski.enums.ProductType;
 import pl.michal.olszewski.repository.ProductDefinitionRepository;
 import pl.michal.olszewski.repository.ProductRepository;
 

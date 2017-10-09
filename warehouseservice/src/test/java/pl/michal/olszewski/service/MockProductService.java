@@ -10,7 +10,6 @@ import pl.michal.olszewski.product.ProductStatus;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
 
 @Service

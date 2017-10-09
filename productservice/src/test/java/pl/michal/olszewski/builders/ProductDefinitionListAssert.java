@@ -1,7 +1,6 @@
 package pl.michal.olszewski.builders;
 
 import org.assertj.core.api.ListAssert;
-import pl.michal.olszewski.dto.ProductDTO;
 import pl.michal.olszewski.dto.ProductDefinitionDTO;
 
 import java.util.List;
