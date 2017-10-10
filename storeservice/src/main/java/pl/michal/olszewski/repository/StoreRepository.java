@@ -1,5 +1,6 @@
 package pl.michal.olszewski.repository;
 
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -21,4 +22,7 @@ public interface StoreRepository extends JpaRepository<Store, Long> {
 
     @Query("select w from Store w left join fetch w.productIds where w.id=?1")
     Optional<Store> findById(Long storeId);
+
+    @CacheEvict(value = "stores", allEntries = true)
+    Store saveAndFlush(Store store);
 }

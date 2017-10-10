@@ -1,6 +1,8 @@
 package pl.michal.olszewski.service;
 
 import lombok.NonNull;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -34,30 +36,36 @@ public class WarehouseService {
         this.storeService = storeService;
     }
 
+    @Cacheable("warehouses")
     public WarehouseDTO getWarehouseById(final Long warehouseId) {
         return warehouseRepository.findById(warehouseId).map(v -> new WarehouseDTO(v.getName(), v.getAddress()))
                 .orElse(null);
     }
 
+    @Cacheable("warehouses")
     public WarehouseDTO getWarehouseByName(@NonNull final String warehouseName) {
         return warehouseRepository.findByName(warehouseName).map(v -> new WarehouseDTO(v.getName(), v.getAddress()))
                 .orElse(null);
     }
 
+    @Cacheable("warehouses")
     public List<WarehouseDTO> getWarehouses(final Integer limit, final Integer page) {
         PageRequest pageRequest = new PageRequest(getPage(page), getLimit(limit));
         return warehouseRepository.findAll(pageRequest).getContent().stream().map(v -> new WarehouseDTO(v.getName(), v.getAddress())).collect(Collectors.toList());
     }
 
+    @CacheEvict(value = "warehouses", allEntries = true)
     public void createWarehouse(final WarehouseDTO warehouseDTO) {
         Warehouse warehouse = new Warehouse(warehouseDTO);
         warehouseRepository.save(warehouse);
     }
 
+    @CacheEvict(value = "warehouses", allEntries = true)
     public void updateWarehouse(final WarehouseDTO warehouseDTO, final Long id) {
         warehouseRepository.updateWarehouse(warehouseDTO.getName(), warehouseDTO.getStreet(), warehouseDTO.getCity(), warehouseDTO.getCountry(), warehouseDTO.getZipCode(), id);
     }
 
+    @CacheEvict(value = "warehouses", allEntries = true)
     public void deleteWarehouse(final Long id) {
         warehouseRepository.delete(id);
     }

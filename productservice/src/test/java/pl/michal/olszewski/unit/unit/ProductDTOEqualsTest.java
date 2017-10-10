@@ -1,9 +1,6 @@
 package pl.michal.olszewski.unit.unit;
 
 import pl.michal.olszewski.dto.ProductDTO;
-import pl.michal.olszewski.dto.ProductsStatusChangeDTO;
-
-import java.util.Arrays;
 
 public class ProductDTOEqualsTest extends LocalEqualsHashCodeTest<ProductDTO> {
     @Override

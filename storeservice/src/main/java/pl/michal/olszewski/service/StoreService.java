@@ -1,6 +1,8 @@
 package pl.michal.olszewski.service;
 
 import lombok.NonNull;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -35,30 +37,36 @@ public class StoreService {
         this.warehouseService = warehouseService;
     }
 
+    @Cacheable("stores")
     public StoreDTO getStoreById(final Long storeId) {
         return storeRepository.findById(storeId).map(v -> new StoreDTO(v.getName(), v.getAddress()))
                 .orElse(null);
     }
 
+    @Cacheable("stores")
     public StoreDTO getStoreByName(@NonNull final String storeName) {
         return storeRepository.findByName(storeName).map(v -> new StoreDTO(v.getName(), v.getAddress()))
                 .orElse(null);
     }
 
+    @Cacheable("stores")
     public List<StoreDTO> getStores(final Integer limit, final Integer page) {
         PageRequest pageRequest = new PageRequest(getPage(page), getLimit(limit));
         return storeRepository.findAll(pageRequest).getContent().stream().map(v -> new StoreDTO(v.getName(), v.getAddress())).collect(Collectors.toList());
     }
 
+    @CacheEvict(value = "stores", allEntries = true)
     public void createStore(final StoreDTO storeDTO) {
         Store store = new Store(storeDTO);
         storeRepository.save(store);
     }
 
+    @CacheEvict(value = "stores", allEntries = true)
     public void updateStore(final StoreDTO storeDTO, final Long id) {
         storeRepository.updateStore(storeDTO.getName(), storeDTO.getStreet(), storeDTO.getCity(), storeDTO.getCountry(), storeDTO.getZipCode(), id);
     }
 
+    @CacheEvict(value = "stores", allEntries = true)
     public void deleteStore(final Long id) {
         storeRepository.delete(id);
     }

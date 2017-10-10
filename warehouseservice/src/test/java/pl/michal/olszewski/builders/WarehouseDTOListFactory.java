@@ -26,7 +26,6 @@ public class WarehouseDTOListFactory {
         });
         return warehouseDTOS;
     }
-
     public List<Warehouse> buildNumberOfWarehousesAndSave(int numberOfWarehouses) {
         List<Warehouse> warehouses = new ArrayList<>();
         IntStream.range(0, numberOfWarehouses).forEachOrdered(number -> {

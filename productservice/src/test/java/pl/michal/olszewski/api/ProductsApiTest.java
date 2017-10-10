@@ -1,5 +1,6 @@
 package pl.michal.olszewski.api;
 
+import lombok.extern.slf4j.Slf4j;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,8 @@ import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+
+@Slf4j
 public class ProductsApiTest extends IntegrationTest {
 
     @Autowired

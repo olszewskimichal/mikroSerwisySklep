@@ -1,5 +1,7 @@
 package pl.michal.olszewski.service;
 
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Service;
@@ -29,6 +31,7 @@ public class ProductService {
         this.productDefinitionRepository = productDefinitionRepository;
     }
 
+    @Cacheable("products")
     public ProductDTO getProduct(final Long id) {
         Product product = productRepository.findByIdFetchProductDetails(id);
         if (product == null)
@@ -36,44 +39,54 @@ public class ProductService {
         return new ProductDTO(product);
     }
 
+    @Cacheable("products")
     public List<ProductDTO> getProducts(final Integer limit, final Integer page) {
         PageRequest pageRequest = new PageRequest(getPage(page), getLimit(limit));
         return productRepository.findAll(pageRequest).getContent().stream().map(ProductDTO::new).collect(Collectors.toList());
     }
 
+    @CacheEvict(value = "products", allEntries = true)
     public void deleteProduct(final Long id) {
         productRepository.delete(id);
     }
 
+    @CacheEvict(value = "products", allEntries = true)
     public void createProduct(final ProductDTO productDTO) {
         productRepository.save(new Product(productDefinitionRepository.findOne(productDTO.getProductDefinition()), Objects.requireNonNull(ProductStatus.fromValue(productDTO.getProductStatus()))));
     }
 
+    @CacheEvict(value = "products", allEntries = true)
     public void updateProduct(final Long productId, final ProductDTO productDTO) {
         productRepository.updateProduct(productDefinitionRepository.findOne(productDTO.getProductDefinition()), productDTO.getProductStatus(), productId);
     }
 
+    @Cacheable("productDefinitions")
     public ProductDefinitionDTO getProductDefinition(final Long id) {
         return new ProductDefinitionDTO(productDefinitionRepository.findOne(id));
     }
 
+    @Cacheable("productDefinitions")
     public ProductDefinitionDTO getProductDefinitionByName(final String name) {
         return new ProductDefinitionDTO(productDefinitionRepository.findByName(name));
     }
 
+    @Cacheable("productDefinitions")
     public List<ProductDefinitionDTO> getProductDefinitions(final Integer limit, final Integer page) {
         PageRequest pageRequest = new PageRequest(getPage(page), getLimit(limit));
         return productDefinitionRepository.findAll(pageRequest).getContent().stream().map(ProductDefinitionDTO::new).collect(Collectors.toList());
     }
 
+    @CacheEvict(value = "productDefinitions", allEntries = true)
     public void deleteProductDefinition(final Long id) {
         productDefinitionRepository.delete(id);
     }
 
+    @CacheEvict(value = "productDefinitions", allEntries = true)
     public void createProductDefinition(final ProductDefinitionDTO productDefinitionDTO) {
         productDefinitionRepository.save(new ProductDefinition(productDefinitionDTO));
     }
 
+    @CacheEvict(value = "productDefinitions", allEntries = true)
     public void updateProductDefinition(final Long productDefId, final ProductDefinitionDTO productDefinitionDTO) {
         productDefinitionRepository.updateProductDefinition(productDefinitionDTO.getName(), productDefinitionDTO.getDescription(), productDefinitionDTO.getImageUrl(), productDefinitionDTO.getProdType(), productDefinitionDTO.getPrice(), productDefId);
     }
@@ -86,6 +99,7 @@ public class ProductService {
         return (Objects.isNull(page) ? 0 : page);
     }
 
+    @Cacheable("products")
     public List<ProductDTO> getAvailableProducts(String productsIds) {
         List<Product> products = productRepository.findByProductIds(extractIdsFromString(productsIds));
         return products.stream().map(ProductDTO::new).collect(Collectors.toList());
