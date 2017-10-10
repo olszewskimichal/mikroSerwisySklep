@@ -18,6 +18,7 @@ import java.util.List;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Matchers.anyLong;
 import static org.mockito.MockitoAnnotations.initMocks;
 
 public class ProductServiceTest {
@@ -57,5 +58,14 @@ public class ProductServiceTest {
         assertThat(products.size()).isEqualTo(2);
         assertThat(products.get(0).getProductStatus()).isEqualTo(ProductStatus.NEW.getValue());
         assertThat(products.get(1).getProductStatus()).isEqualTo(ProductStatus.NEW.getValue());
+    }
+
+    @Test
+    public void shouldReturnNullWhenProductNotExist() {
+        given(productRepository.findByIdFetchProductDetails(anyLong())).willReturn(null);
+
+        ProductDTO product = productService.getProduct(1L);
+
+        assertThat(product).isNull();
     }
 }

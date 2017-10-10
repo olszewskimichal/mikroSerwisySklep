@@ -18,10 +18,14 @@ import java.util.List;
 public class RevisionRepository {
 
     @PersistenceContext
-    private EntityManager entityManager;
+    private final EntityManager entityManager;
+
+    public RevisionRepository(EntityManager entityManager) {
+        this.entityManager = entityManager;
+    }
 
 
-    public List<EntityWithRevision> getEntityRevision(Long id,Class aClass) {
+    public List<EntityWithRevision> getEntityRevision(Long id, Class aClass) {
         AuditReader auditReader = AuditReaderFactory.get(entityManager);
         List<Number> revisions = auditReader.getRevisions(aClass, id);
 
