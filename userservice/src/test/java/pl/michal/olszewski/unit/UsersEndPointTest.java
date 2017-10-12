@@ -34,7 +34,7 @@ public class UsersEndPointTest {
         assertThat(user).isNotNull();
         assertThat(user.getStatusCode()).isEqualTo(HttpStatus.OK);
         assertThat(user.getBody()).isNotNull();
-        assertThat(user.getBody().getUsername()).isEqualTo("nazwa");
+        assertThat(user.getBody().getUsername()).isEqualTo("userName");
     }
 
     @Test
@@ -50,14 +50,14 @@ public class UsersEndPointTest {
 
     @Test
     public void shouldReturnUserByName() {
-        given(service.getUserByName("nazwa2")).willReturn(UserDTO.builder().username("userName2").firstName("nazwa").email("email").build());
+        given(service.getUserByName("userName2")).willReturn(UserDTO.builder().username("userName2").firstName("nazwa").email("email").build());
 
         ResponseEntity<UserDTO> user = endPoint.getUserByName("userName2");
 
         assertThat(user).isNotNull();
         assertThat(user.getStatusCode()).isEqualTo(HttpStatus.OK);
         assertThat(user.getBody()).isNotNull();
-        assertThat(user.getBody().getUsername()).isEqualTo("nazwa2");
+        assertThat(user.getBody().getUsername()).isEqualTo("userName2");
     }
 
     @Test

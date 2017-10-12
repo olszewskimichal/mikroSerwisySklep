@@ -32,7 +32,7 @@ public class UserEndPointIntegrationTest {
         given(service.getUserById(1L)).willReturn(UserDTO.builder().username("nazwaTest").build());
 
         mockMvc.perform(get("/api/v1/users/1"))
-                .andExpect(content().string("{\"name\":\"nazwaTest\",\"street\":null,\"state\":null,\"city\":null,\"country\":null,\"zipCode\":null}"))
+                .andExpect(content().string("{\"username\":\"nazwaTest\",\"firstName\":null,\"lastName\":null,\"email\":null}"))
                 .andExpect(status().is2xxSuccessful());
     }
 
@@ -48,7 +48,7 @@ public class UserEndPointIntegrationTest {
         given(service.getUserByName("nazwaTest")).willReturn(UserDTO.builder().username("nazwaTest").build());
 
         mockMvc.perform(get("/api/v1/users/name/nazwaTest"))
-                .andExpect(content().string("{\"name\":\"nazwaTest\",\"street\":null,\"state\":null,\"city\":null,\"country\":null,\"zipCode\":null}"))
+                .andExpect(content().string("{\"username\":\"nazwaTest\",\"firstName\":null,\"lastName\":null,\"email\":null}"))
                 .andExpect(status().is2xxSuccessful());
     }
 
@@ -63,7 +63,7 @@ public class UserEndPointIntegrationTest {
     public void shouldReturnUsersWithLimit() throws Exception {
         given(service.getUsers(2, null)).willReturn(UserDTOListFactory.getNotPersistedUsers(2));
         mockMvc.perform(get("/api/v1/users?limit=2"))
-                .andExpect(content().string("[{\"name\":\"user_0\",\"street\":\"street\",\"state\":null,\"city\":\"city\",\"country\":\"pl\",\"zipCode\":\"zip\"},{\"name\":\"user_1\",\"street\":\"street\",\"state\":null,\"city\":\"city\",\"country\":\"pl\",\"zipCode\":\"zip\"}]"))
+                .andExpect(content().string("[{\"username\":\"name\",\"firstName\":\"userName_0\",\"lastName\":\"lastName\",\"email\":null},{\"username\":\"name\",\"firstName\":\"userName_1\",\"lastName\":\"lastName\",\"email\":null}]"))
                 .andExpect(status().is2xxSuccessful());
     }
 

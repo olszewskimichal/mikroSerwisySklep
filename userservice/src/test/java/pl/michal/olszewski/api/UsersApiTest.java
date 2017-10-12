@@ -64,7 +64,7 @@ public class UsersApiTest extends IntegrationTest {
 
         UserDTO user = thenGetOneUserFromApiByUserName(userDTOS.get(0).getUsername());
 
-        assertThat(userDTOS.get(0)).isEqualToComparingOnlyGivenFields(user, "name", "street", "city", "country", "zipCode");
+        assertThat(userDTOS.get(0)).isEqualToComparingOnlyGivenFields(user, "username", "firstName", "lastName", "email");
     }
 
     @Test
@@ -73,7 +73,7 @@ public class UsersApiTest extends IntegrationTest {
                 .buildNumberOfUsersAndSave(1);
 
         UserDTO userDTO = thenGetOneUserFromApiById(users.get(0).getId());
-        assertThat(new UserDTO(users.get(0))).isEqualToComparingOnlyGivenFields(userDTO, "name", "street", "city", "country", "zipCode");
+        assertThat(new UserDTO(users.get(0))).isEqualToComparingOnlyGivenFields(userDTO, "username", "firstName", "lastName", "email");
     }
 
     @Test
@@ -93,15 +93,15 @@ public class UsersApiTest extends IntegrationTest {
         //given
         User user = givenUser()
                 .buildNumberOfUsersAndSave(1).get(0);
-        UserDTO userDTO = new UserDTO(user);
+        UserDTO userDTO = new UserDTO(User.builder().username("nazwa nowa").lastName("lastName").firstName("name").build());
 
         //when
         thenUpdateUserByApi(user.getId(), userDTO);
 
         //then
-        assertThat(userRepository.findByUserName(userDTO.getUsername()))
+        assertThat(userRepository.findByUsername(userDTO.getUsername()).get())
                 .isNotNull()
-                .hasFieldOrPropertyWithValue("name", "nazwa nowa");
+                .hasFieldOrPropertyWithValue("username", "nazwa nowa");
     }
 
     @Test

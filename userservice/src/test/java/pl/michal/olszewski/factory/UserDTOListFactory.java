@@ -19,7 +19,7 @@ public class UserDTOListFactory {
     public List<UserDTO> buildNumberOfUsersDTOAndSave(int numberOfUsers) {
         List<UserDTO> userDTOS = new ArrayList<>();
         IntStream.range(0, numberOfUsers).forEachOrdered(number -> {
-            User user = User.builder().firstName(String.format("userName_%s", number)).lastName("lastName").username("name").build();
+            User user = User.builder().username(String.format("userName_%s", number)).lastName("lastName").firstName("name").build();
             repository.saveAndFlush(user);
             userDTOS.add(new UserDTO(user));
         });
@@ -29,7 +29,7 @@ public class UserDTOListFactory {
     public List<User> buildNumberOfUsersAndSave(int numberOfUsers) {
         List<User> users = new ArrayList<>();
         IntStream.range(0, numberOfUsers).forEachOrdered(number -> {
-            User user = User.builder().firstName(String.format("userName_%s", number)).lastName("lastName").username("name").build();
+            User user = User.builder().username(String.format("userName_%s", number)).lastName("lastName").firstName("name").build();
             repository.saveAndFlush(user);
             users.add(user);
         });
